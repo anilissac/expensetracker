@@ -1,0 +1,1 @@
+﻿Scaffold-DbContext -UseDatabaseNames "Server=ANIL-XPS;Database=ExpenseTracker;user id=NaviCare; password=NaviCare;TrustServerCertificate=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models -f
