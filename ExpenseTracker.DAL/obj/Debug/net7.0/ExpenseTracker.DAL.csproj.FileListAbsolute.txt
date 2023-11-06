@@ -1,0 +1,14 @@
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\bin\Debug\net7.0\ExpenseTracker.DAL.deps.json
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\bin\Debug\net7.0\ExpenseTracker.DAL.runtimeconfig.json
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\bin\Debug\net7.0\ExpenseTracker.DAL.dll
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\bin\Debug\net7.0\ExpenseTracker.DAL.pdb
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.csproj.AssemblyReference.cache
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.AssemblyInfoInputs.cache
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.AssemblyInfo.cs
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.csproj.CoreCompileInputs.cache
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.dll
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\refint\ExpenseTracker.DAL.dll
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.pdb
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ExpenseTracker.DAL.genruntimeconfig.cache
+C:\Users\anili\source\repos\anilissac\expensetracker\ExpenseTracker.DAL\obj\Debug\net7.0\ref\ExpenseTracker.DAL.dll

@@ -12,7 +12,7 @@ namespace ExpenseTracker.DAL.Configurations
     /// <summary>
     /// Overriding partial class of entity db context -Qourt_CoreContext to avoid overwriting of connection string in every scafold update.
     /// </summary>
-    public partial class ETDBContext : MEDSIMSContext
+    public partial class ETDBContext : ExpenseTrackerContext
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

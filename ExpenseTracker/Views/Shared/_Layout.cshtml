@@ -23,7 +23,20 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <!-- CSS Files -->
     <link id="pagestyle" href="@Url.Content("~/assets/css/material-dashboard.css?v=3.1.0" )" rel="stylesheet" />
+    <!--     Datatable     -->
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/datatables/datatables.bootstrap.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/datatables/jquery.datatables.min.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/datatables/buttons.datatables.min.css")" />
+    <!--     sweet alert     -->
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/sweetalert/sweetalert.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/notify/toast.min.css")" />
+    <!--     gritter sticky note    -->
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/gritter/css/jquery.gritter.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/select-ajax/css/bootstrap-select.min.css")" />
+    @*    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/select-ajax/css/ajax-bootstrap-select.css")" />*@
 
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/dropzone/dropzone.css")" />
+    <link rel="stylesheet" type="text/css" href="@Url.Content("~/lib/daterangepicker/daterangepicker.css")" />
     @await RenderSectionAsync("Styles", required: false)
     <!-- Nepcha Analytics (nepcha.com) -->
     <!-- Nepcha is a easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA and PECR. -->
@@ -35,9 +48,9 @@
     <aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark" id="sidenav-main">
         <div class="sidenav-header">
             <i class="fas fa-times p-3 cursor-pointer text-white opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
-            <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard " target="_blank">
+            <a class="navbar-brand m-0" href="#" >
                 <img src="../assets/img/logo-ct.png" class="navbar-brand-img h-100" alt="main_logo">
-                <span class="ms-1 font-weight-bold text-white">Expense Tracker</span>
+                <span class="ms-1 font-weight-bold text-white">Restaurant Manager</span>
             </a>
         </div>
         <hr class="horizontal light mt-0 mb-2">
@@ -228,10 +241,33 @@
     <script src="@Url.Content("~/assets/js/core/bootstrap.min.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/perfect-scrollbar.min.js")"></script>
     <script src="@Url.Content("~/assets/js/plugins/smooth-scrollbar.min.js")"></script>
-    
-    <!-- Control Center for Material Dashboard: parallax effects, scripts for the example pages etc -->
-    <script src="@Url.Content("~/assets/js/material-dashboard.min.js?v=3.1.0")"></script>
-    @await RenderSectionAsync("Scripts", required: false)
+    <!-- Datatable -->
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/jquery.datatables.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/datatables.bootstrap.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/datatables.buttons.min.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/buttons.flash.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/jszip.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/pdfmake.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/vfs_fonts.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/buttons.html5.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/datatables/buttons.print.min.js")"></script>
+    <!-- sweet alert -->
+    <script type="text/javascript" src="@Url.Content("~/lib/sweetalert/sweetalert.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/notify/toast.min.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/lib/moment/moment.js")"></script>
+
+    <!--Page Loader Block Unblock-->
+    <script type="text/javascript" src="@Url.Content("~/lib/jquery/dist/jquery.blockUI.js")"></script>
+    <!--  gritter sticky note -->
+    <script type="text/javascript" src="@Url.Content("~/lib/gritter/js/jquery.gritter.js")"></script>
+    <!-- notify -->
+    <script type="text/javascript" src="@Url.Content("~/lib/notify/bootstrap-notify.js")"></script>
+
+    <script src="@Url.Content("~/lib/daterangepicker/daterangepicker.min.js")"></script>
+
+    <script type="text/javascript" src="@Url.Content("~/lib/dropzone/dropzone.js")"></script>
+
     <script>
         var win = navigator.platform.indexOf('Win') > -1;
         if (win && document.querySelector('#sidenav-scrollbar')) {
@@ -241,6 +277,9 @@
             Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
         }
     </script>
+    <script src="@Url.Content("~/assets/js/material-dashboard.min.js?v=3.1.0")"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+   
 </body>
 
 </html>

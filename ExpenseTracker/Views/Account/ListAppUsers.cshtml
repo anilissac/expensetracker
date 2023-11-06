@@ -1,0 +1,315 @@
+﻿@using ExpenseTracker.DAL.Utilities
+@using ExpenseTracker.DAL.Models;
+@{
+    ViewData["Title"] = "Application Users";
+}
+@section Styles
+    {
+    <style>
+        .cards tbody tr {
+            float: left;
+            width: 19rem;
+            margin: 0.5rem;
+            border: 0.0625rem solid rgba(0, 0, 0, .125);
+            border-radius: .25rem;
+            box-shadow: 0.25rem 0.25rem 0.5rem rgba(0, 0, 0, 0.25);
+        }
+
+        .cards tbody td {
+            display: block;
+        }
+
+        .cards thead {
+            display: none;
+        }
+
+        .cards td:before {
+            content: attr(data-label);
+            position: relative;
+            float: left;
+            color: #808080;
+            min-width: 4rem;
+            margin-left: 0;
+            margin-right: 1rem;
+            text-align: left;
+        }
+
+        tr.selected td:before {
+            color: #CCC;
+        }
+
+        .table .avatar {
+            width: 50px;
+        }
+
+        .cards .avatar {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+        }
+    </style>
+}
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+            // Datatable Starts
+            $('#tblAppUsers').DataTable({
+                dom: 'Bfr<"datatable-actions">tip',
+                "pageLength": 15,
+                "order": [],
+                'columnDefs': [{
+                    "width": "15%",
+                    "className": "text-left",
+                    'targets': [1],
+                }
+                ],
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: '<i class="fa fa-files-o"></i>',
+                        titleAttr: 'Copy',
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [1, 2, 3, 4, 5]
+                        }
+
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fa fa-file-excel-o"></i>',
+                        titleAttr: 'Excel',
+                        title: '@ViewBag.Title',
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: '<i class="fa fa-file-text-o"></i>',
+                        titleAttr: 'CSV',
+                        title: '@ViewBag.Title',
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<i class="fa fa-file-pdf-o"></i>',
+                        titleAttr: 'PDF',
+                        title: '@ViewBag.Title',
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [1, 2, 3, 4, 5]
+                        }
+                    },
+                    {
+                        text: '<i class="fa fa-id-card fa-lg text-primary" aria-hidden="true"></i> <i class="fa fa-arrow fa-lg text-primary" aria-hidden="true"></i> <i class="fa fa-table fa-lg text-primary" aria-hidden="true"></i>',
+                        titleAttr: 'Toggle View',
+                        action: function (e, dt, node) {
+                            $(dt.table().node()).toggleClass('cards');
+                            dt.draw('page');
+                        },
+                    }
+                ],
+
+                'drawCallback': function (settings) {
+                    var api = this.api();
+                    var $table = $(api.table().node());
+
+                    if ($table.hasClass('cards')) {
+
+                        // Create an array of labels containing all table headers
+                        var labels = [];
+                        $('thead th', $table).each(function () {
+                            labels.push($(this).text());
+                        });
+
+                        // Add data-label attribute to each cell
+                        $('tbody tr', $table).each(function () {
+                            $(this).find('td').each(function (column) {
+                                $(this).attr('data-label', labels[column]);
+                            });
+                        });
+
+                        var max = 0;
+                        $('tbody tr', $table).each(function () {
+                            max = Math.max($(this).height(), max);
+                        }).height(max);
+
+                    } else {
+                        // Remove data-label attribute from each cell
+                        $('tbody td', $table).each(function () {
+                            $(this).removeAttr('data-label');
+                        });
+
+                        $('tbody tr', $table).each(function () {
+                            $(this).height('auto');
+                        });
+                    }
+                }
+
+
+            });//table
+
+
+
+
+            $.getJSON('/Settings/GetSecurityRoles', function (result) {
+                FillDropdown(".SecurityRoleID", result);
+            });
+
+        });//document
+
+        function Remove(enID) {
+
+            swal({ title: "Remove User", text: "Do you want to delete this user?", type: "warning", showCancelButton: true, confirmButtonColor: "#009900", confirmButtonText: "YES!", cancelButtonText: "NO!", closeOnConfirm: false, closeOnCancel: true },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax(
+                            {
+                                type: "POST", //HTTP POST Method
+                                url: "/Account/RemoveAppUser?sen=" + enID, // Controller/View
+                                success: function (successdata) {
+                                    location.reload();
+                                }
+                            });//ajax
+                    }//if confirm
+                }//fun confirm
+            );//swal
+        }
+
+        function SetPermission(enID) {
+            $('#enUserID').val(enID);
+            $('#SetPermission').offcanvas('toggle');
+
+        }
+    </script>
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+    <div id="PageHeader">
+        <h4 class="fw-bold mb-4">@ViewData["Title"]</h4>
+        <div id="PageActions">
+            <a class="btn btn-primary" href="@Url.Content("~/Account/ViewAppUser")"><i class="tf-icons bx bx-add-to-queue"></i>&nbsp;Add New</a>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <table id="tblAppUsers" class="table table-hover table-striped " width="100%">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>Application User</th>
+                        <th>Username</th>
+                        <th>Contact Details</th>
+                        <th>Last Accessed On</th>
+                        <th>Modified On</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var data in (IEnumerable<AppUserView>)ViewData["AppUsers"])
+                    {
+                        <tr>
+                            <td>
+                                <a href="@Url.Content("~/Account/ViewAppUser?sen=" + data.enUserID)" class="btn btn-icon btn-outline-primary">
+                                    <span class="tf-icons bx bx-show"></span>
+                                </a>
+                            </td>
+                            <td class="text-center">
+                                <img src="@(data.ProfilePictureURL==null ? @Url.Content("~/assets/img/avatars/1.png") :data.ProfilePictureURL)"
+                                     alt="user-avatar"
+                                     class="d-block avatar rounded"
+                                     height="100"
+                                     width="100"
+                                     id="uploadedAvatar" />
+                            </td>
+                            <td><strong>@data.ContactName </strong> <br> @data.DefaultSecurityRoleName</td>
+                            <td>@data.Username</td>
+                            <td>@data.ContactNumber <br> @data.ContactEmail</td>
+                            @if (data.LastAccessedOn == null)
+                            {
+                                <td>Never</td>
+                            }
+                            else
+                            {
+                                <td>@data.LastAccessedOn.Value.ToString("dd/MM/yyyy hh:mm tt")</td>
+                            }
+                            @if (data.ModifiedDate == null)
+                            {
+                                <td>@data.CreatedDate.ToString("dd/MM/yyyy hh:mm tt") <br /> @data.CreatedByName</td>
+                            }
+                            else
+                            {
+                                <td>@data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm tt") <br /> @data.ModifiedByName</td>
+                            }
+
+                            <td>
+                                <div class="dropdown">
+                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                    </button>
+                                    <div class="dropdown-menu">
+                                        <a class="dropdown-item" href="javascript:UnderDevelopment();"><i class="bx bx-mail-send me-1"></i> Send Activation Mail</a>
+                                        <a class="dropdown-item" href="javascript:SetPermission('@data.enUserID');"><i class="bx bx-shield-quarter me-1"></i> Set Permission</a>
+                                        <a class="dropdown-item" href="javascript:Remove('@data.enUserID');"><i class="bx bx-trash me-1"></i> Delete</a>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- / Set Permissions -->
+<div class="offcanvas offcanvas-end"
+     data-bs-scroll="true"
+     tabindex="-1"
+     id="SetPermission"
+     aria-labelledby="offcanvasBothLabel">
+    <div class="offcanvas-header">
+        <h5 id="offcanvasBothLabel" class="offcanvas-title">Set Permission</h5>
+        <button type="button"
+                class="btn-close text-reset"
+                data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body @*my-auto mx-0 flex-grow-0*@">
+        <input type="hidden" id="enUserID" />
+        <!-- Companies -->
+        @foreach (var data in (IEnumerable<OrgUnitView>)ViewData["OrgUnits"])
+        {
+            <div class="d-flex mb-3">
+
+                <div class="flex-grow-1 row">
+                    <div class="col-10 col-sm-10 mb-sm-0 mb-2">
+                        <small class="mb-0">@data.OrgUnitName</small>
+                        <select id="SecurityRoleID" name="SecurityRoleID" class="select2 form-select SecurityRoleID">
+                            <option value="">Select Role</option>
+                        </select>
+                    </div>
+                    <div class="col-2 col-sm-2 text-end">
+                        <div class="form-check form-switch mt-4">
+                            <input class="form-check-input float-end" type="checkbox" role="switch">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- /Companies -->
+
+        <button type="button"
+                class="btn btn-outline-secondary d-grid w-100"
+                data-bs-dismiss="offcanvas">
+            Cancel
+        </button>
+    </div>
+</div>
+<!-- / Set Permissions -->

@@ -1,4 +1,8 @@
-﻿using Microsoft.AspNetCore.Diagnostics;
+﻿using ExpenseTracker.Filters;
+using ExpenseTracker.DAL.Models;
+using ExpenseTracker.DAL.Repositories;
+using ExpenseTracker.DAL.Utilities;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -20,9 +24,9 @@ namespace ExpenseTracker.Controllers
         {
 
             var exception = HttpContext.Features.Get<IExceptionHandlerFeature>();
-            //SettingsRepository R_Settings = new SettingsRepository(_httpContextAccessor);
+            SettingsRepository R_Settings = new SettingsRepository(_httpContextAccessor);
 
-           // R_Settings.NotifyDeveloper(exception.Error);
+            R_Settings.NotifyDeveloper(exception.Error);
             return View(exception);
         }
 

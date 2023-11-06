@@ -1,0 +1,174 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@using ExpenseTracker.DAL.Utilities
+@using ExpenseTracker.DAL.Models;
+@{
+    ViewData["Title"] = "User Details";
+    var data = (AppUserView)ViewData["AppUser"];
+}
+@section Styles
+    {
+    <style>
+
+    </style>
+}
+@section Scripts
+    {
+    <script>
+        $(document).ready(function () {
+
+
+
+            $.getJSON('/Settings/GetOrgUnits', function (result) {
+                FillDropdown("#DefaultOrgUnitID", result);
+            });
+
+            $.getJSON('/Settings/GetSecurityRoles', function (result) {
+                FillDropdown("#DefaultSecurityRoleID", result);
+
+                var CurrentSecurityRoleID = @HttpContextAccessor.HttpContext.Session.GetInt32("CurrentSecurityRoleID")
+                        if (CurrentSecurityRoleID == 1) {
+                    $('#DefaultSecurityRoleID').append($('<option>', {
+                        value: 1,
+                        text: 'Super Administrator'
+                    }));
+                }
+            });
+
+        });//document
+
+        $("#upload").change(function () {
+
+
+            var files = $('#upload').prop("files");
+            formData = new FormData();
+            formData.append("postedFile", files[0]);
+            formData.append("UserID", @data.UserID);
+            jQuery.ajax({
+                type: 'POST',
+                url: "/Account/UploadProfilePic",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                beforeSend: function (xhr) {
+                    xhr.setRequestHeader("XSRF-TOKEN",
+                        $('input:hidden[name="__RequestVerificationToken"]').val());
+                },
+                success: function (retvalue) {
+
+                    if (retvalue == true) {
+
+                        $.toast({
+                            type: 'success',
+                            title: 'Profile Photo',
+                            subtitle: '5 sec ago',
+                            content: 'Successfully changed profile photo',
+                            delay: 3000
+                        });
+                        location.reload();
+                    }
+                },
+                error: function (err) {
+                    $.toast({
+                        type: 'danger',
+                        title: 'Error Occured',
+                        subtitle: '5 sec ago',
+                        content: err,
+                        delay: 3000
+                    });
+                }
+            });
+        });
+
+
+    </script>
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+
+    <div id="PageHeader">
+        <h4 class="fw-bold mb-4">@ViewData["Title"]<span class="text-muted fw-light"></span></h4>
+        <div id="PageActions">
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <div class="d-flex align-items-start align-items-sm-center gap-4">
+                <img src="@(data.ProfilePictureURL==null?"../assets/img/avatars/1.png":data.ProfilePictureURL)"
+                     alt="user-avatar"
+                     class="d-block rounded"
+                     height="100"
+                     width="100"
+                     id="uploadedAvatar" />
+                <div class="button-wrapper">
+                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
+                        <span class="d-none d-sm-block">Upload new photo</span>
+                        <i class="bx bx-upload d-block d-sm-none"></i>
+                        <input type="file"
+                               id="upload" name="upload"
+                               class="account-file-input"
+                               hidden
+                               accept="image/png, image/jpeg" />
+                    </label>
+                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
+                        <i class="bx bx-reset d-block d-sm-none"></i>
+                        <span class="d-none d-sm-block">Reset</span>
+                    </button>
+
+                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
+                </div>
+            </div>
+        </div>
+        <hr class="my-0" />
+        <!-- Account -->
+        @using (Html.BeginForm("SaveAppUser", "Account", FormMethod.Post))
+        {
+            <input type="hidden" id="UserID" name="UserID" value="@data.UserID" />
+            <div class="card-body">
+                <div class="row">
+                    <div class="mb-3 col-md-4">
+                        <label for="FirstName" class="form-label">First Name</label>
+                        <input class="form-control" type="text" id="FirstName" name="FirstName" value="@data.FirstName" autofocus="">
+                    </div>
+                    <div class="mb-3 col-md-4">
+                        <label for="LastName" class="form-label">Last Name</label>
+                        <input class="form-control" type="text" id="LastName" name="LastName" value="@data.LastName">
+                    </div>
+                    <div class="mb-3 col-md-4">
+                        <label class="form-label" for="Username">Username</label>
+                        <input type="text" id="Username" name="Username" class="form-control" value="@data.Username" placeholder="john.doe@example.com">
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label" for="ContactNumber">Phone Number</label>
+                        <input type="text" id="ContactNumber" name="ContactNumber" class="form-control" value="@data.ContactNumber">
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="ContactEmail" class="form-label">E-mail</label>
+                        <input class="form-control" type="text" id="ContactEmail" name="ContactEmail" value="@data.ContactEmail" placeholder="john.doe@example.com">
+                    </div>
+
+
+                    <div class="mb-3 col-md-6">
+                        <label class="form-label" for="DefaultOrgUnitID">Default Company</label>
+                        <select id="DefaultOrgUnitID" name="DefaultOrgUnitID" class="select2 form-select">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                    <div class="mb-3 col-md-6">
+                        <label for="DefaultSecurityRoleID" class="form-label">Default Security Role</label>
+                        <select id="DefaultSecurityRoleID" name="DefaultSecurityRoleID" class="select2 form-select">
+                            <option value="">Select Role</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <button type="submit" class="btn btn-primary me-2"><i class="tf-icons bx bx-save"></i>&nbsp;Save</button>
+                    <button type="reset" class="btn btn-outline-secondary">Cancel</button>
+                </div>
+            </div>
+        }
+        <!-- /Account -->
+    </div>
+</div>

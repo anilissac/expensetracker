@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace MedsIMS.DAL.Configurations
+namespace ExpenseTracker.DAL.Configurations
 {
     public interface IETConfig
     {

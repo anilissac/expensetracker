@@ -1,0 +1,80 @@
+﻿@using ExpenseTracker.DAL.Utilities
+@using ExpenseTracker.DAL.Models;
+@{
+    ViewData["Title"] = "Application Configuration";
+}
+@section Styles
+    {
+
+    <style>
+
+    </style>
+}
+@section Scripts
+    {
+    <script>
+        $("input[type=text]").change(function () {
+
+            var AppSettingID = $(this).data("appid");
+            var AppSettingValue = $(this).val();
+            var selID = $(this).attr("id");
+
+            $.ajax(
+                {
+                    type: "POST", //HTTP POST Method
+                    url: "/Settings/SetAppSetting?AppSettingID=" + AppSettingID + "&AppSettingValue=" + AppSettingValue, // Controller/View
+                    success: function (successdata) {
+                        if (successdata == 2) {
+                            $("#" + selID).css("background-color", "lightgreen");
+
+                            $.toast({
+                                type: 'success',
+                                title: 'Configuration',
+                                subtitle: '5 sec ago',
+                                content: '"Configuration saved successfully',
+                                delay: 3000
+                            });
+
+                        }
+                    }
+                });//ajax
+
+
+        });//textbox-change
+
+    </script>
+
+}
+<div class="container-xxl flex-grow-1 container-p-y">
+
+
+    <div id="PageHeader">
+        <h4 class="fw-bold mb-4">@ViewData["Title"]<span class="text-muted fw-light"></span></h4>
+        <div id="PageActions">
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <table id="tblSettings" class="table table-hover table-striped" width="100%">
+                <thead>
+                    <tr>
+                        <th style="width:30%">Configuration</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                    @foreach (var data in (IEnumerable<AppSetting>)ViewData["AppSettings"])
+                    {
+                        <tr>
+                            <td>@data.DisplayName</td>
+                            <td>
+                                <input data-appid="@data.AppSettingID" value="@data.AppSettingValue" type="text" class="form-control" id="setdata@(data.AppSettingID)" />
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
