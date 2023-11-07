@@ -1,0 +1,120 @@
+﻿@using ExpenseTracker.DAL.Utilities
+@using ExpenseTracker.DAL.Models;
+@{
+    Layout = "_ShopLayout";
+    ViewData["Title"] = "Dashboard";
+}
+@section Styles
+    {
+    <style>
+     
+    </style>
+    }
+@section Scripts
+    {
+        <script>
+        $(document).ready(function () {
+            $('#SalesOn').val(moment().format("YYYY-MM-DD"));
+            $('#SalesOn').focus();
+        });
+        </script>
+}
+
+<div class="row">
+    <div class="col-12 col-xl-8">
+        <div class="card card-plain h-100">
+            <div class="card-header pb-0 p-3">
+                <h6 class="mb-0">Record Sales</h6>
+            </div>
+            <div class="card-body p-3">
+                 @using (Html.BeginForm("SaveSales", "Sales", FormMethod.Post))
+        {
+                    <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Sales On</label>
+                        <input id="SalesOn" name="SalesOn" type="date" class="form-control">
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Cash</label>
+                        <input id="CashAmount" name="CashAmount" type="number" class="form-control">
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Card/UPI</label>
+                        <input id="BankAmount" name="BankAmount" type="number" class="form-control">
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Credits</label>
+                        <input id="CreditAmount" name="CreditAmount" type="number" class="form-control">
+                    </div>
+                    <div class="form-check form-check-info text-start ps-0">
+                        <input id="IsDayClosing" name="IsDayClosing" class="form-check-input" type="checkbox" value="" checked>
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Day Closing
+                        </label>
+                    </div>
+                    <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Remarks</label>
+                        <input id="Description" name="Description" type="text" class="form-control">
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-lg bg-gradient-primary btn-lg w-100 mt-4 mb-0">Save</button>
+                    </div>
+               }
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12 col-xl-4">
+        <div class="card card-plain h-100">
+            <div class="card-header pb-0 p-3">
+                <h6 class="mb-0">Todays Sales</h6>
+            </div>
+            <div class="card-body p-3">
+                <table id="tblSales" class="table table-hover table-striped" width="100%">
+                    <thead>
+                        <tr>
+                            <th>Cash</th>
+                            <th>Card/UPI</th>
+                            <th>Credits</th>
+                            <th>Total</th>
+                            <th>Recorded By</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0">
+                        @foreach (var data in (IEnumerable<SecurityRoleView>)ViewData["Sales"])
+                        {
+                            <tr>
+                                <td>
+                                    <a href="@Url.Content("~/Inventory/ViewSecurityRole?sen=" + data.enSecurityRoleID)" class="btn btn-icon btn-outline-primary">
+                                        <span class="tf-icons bx bx-show"></span>
+                                    </a>
+                                </td>
+                                <td>@data.SecurityRoleName</td>
+
+                                @if (data.ModifiedDate == null)
+                                {
+                                    <td>@data.CreatedDate.ToString("dd/MM/yyyy hh:mm tt") <br /> @data.CreatedByName</td>
+                                }
+                                else
+                                {
+                                    <td>@data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm tt") <br /> @data.ModifiedByName</td>
+                                }
+
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="javascript:Remove('@data.enSecurityRoleID');"><i class="bx bx-trash me-1"></i> Delete</a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

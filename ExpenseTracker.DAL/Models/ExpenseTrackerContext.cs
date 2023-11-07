@@ -352,7 +352,6 @@ public partial class ExpenseTrackerContext : DbContext
         {
             entity.ToTable("Purchase");
 
-            entity.Property(e => e.Amount).HasColumnType("decimal(18, 2)");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
@@ -363,6 +362,7 @@ public partial class ExpenseTrackerContext : DbContext
             entity.Property(e => e.PaymentRemark).HasMaxLength(500);
             entity.Property(e => e.PurchasedBy).HasMaxLength(100);
             entity.Property(e => e.PurchasedOn).HasColumnType("datetime");
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
 
             entity.HasOne(d => d.Vendor).WithMany(p => p.Purchases)
                 .HasForeignKey(d => d.VendorID)
@@ -385,7 +385,9 @@ public partial class ExpenseTrackerContext : DbContext
             entity.Property(e => e.ModifiedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");
+            entity.Property(e => e.RecordStatus).HasDefaultValueSql("((0))");
             entity.Property(e => e.SalesOn).HasColumnType("datetime");
+            entity.Property(e => e.TotalAmount).HasColumnType("decimal(18, 2)");
         });
 
         modelBuilder.Entity<SecurityRole>(entity =>
