@@ -2,7 +2,7 @@
 @using ExpenseTracker.DAL.Models;
 @{
     Layout = "_ShopLayout";
-    ViewData["Title"] = "Dashboard";
+    ViewData["Title"] = "Todays Sales";
 }
 @section Styles
     {
@@ -16,12 +16,101 @@
         $(document).ready(function () {
             $('#SalesOn').val(moment().format("YYYY-MM-DD"));
             $('#SalesOn').focus();
+
+            $('#CashAmount').blur(update_total);
+            $('#BankAmount').blur(update_total);
+            $('#CreditAmount').blur(update_total);
+            $("input[type=checkbox]").change(function () {
+                if ($(this).prop("checked")) {
+                    $(this).val(true);
+                } else {
+                    $(this).val(false);
+                }
+            });
+            // Datatable Starts
+            $('#tblSales').DataTable({
+                dom: 'Brtip',
+                "pageLength": 10,
+                "order": [],
+                'columnDefs': [{
+                    "width": "20%",
+                    "className": "text-left",
+                    'targets': [4],
+                }
+                ],
+                buttons: [
+                    {
+                        extend: 'copyHtml5',
+                        text: '<i class="fa fa-files-o"></i>',
+                        titleAttr: 'Copy',
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [0,1, 2,3,4]
+                        }
+
+                    },
+                    {
+                        extend: 'excelHtml5',
+                        text: '<i class="fa fa-file-excel-o"></i>',
+                        titleAttr: 'Excel',
+                        title: $('#lblSales').val(),
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'csvHtml5',
+                        text: '<i class="fa fa-file-text-o"></i>',
+                        titleAttr: 'CSV',
+                        title: $('#lblSales').val(),
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    },
+                    {
+                        extend: 'pdfHtml5',
+                        text: '<i class="fa fa-file-pdf-o"></i>',
+                        titleAttr: 'PDF',
+                        title: $('#lblSales').val(),
+                        exportOptions: {
+                            orthogonal: 'export',
+                            columns: [0, 1, 2, 3, 4]
+                        }
+                    }
+                ],
+
+            });//table
         });
-        </script>
+
+        function update_total() {
+            $("#TotalAmount").val(NullSafeFloat($("#CashAmount").val()) + NullSafeFloat($("#BankAmount").val()) + NullSafeFloat($("#CreditAmount").val()));
+            $('#TotalAmount').focus();
+                    }
+
+        function Remove(enID) {
+
+            swal({ title: "Remove Sales Entry", text: "Do you want to delete this sales entry?", type: "warning", showCancelButton: true, confirmButtonColor: "#F44335", confirmButtonText: "YES!", cancelButtonText: "NO!", closeOnConfirm: false, closeOnCancel: true },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $.ajax(
+                            {
+                                type: "POST", //HTTP POST Method
+                                url: "/Sales/RemoveSales?sen=" + enID, // Controller/View
+                                success: function (successdata) {
+                                    location.reload();
+                                }
+                            });//ajax
+                    }//if confirm
+                }//fun confirm
+            );//swal
+        }
+                    </script>
 }
 
 <div class="row">
-    <div class="col-12 col-xl-8">
+    <div class="col-12 col-xl-4">
         <div class="card card-plain h-100">
             <div class="card-header pb-0 p-3">
                 <h6 class="mb-0">Record Sales</h6>
@@ -45,8 +134,12 @@
                         <label class="form-label">Credits</label>
                         <input id="CreditAmount" name="CreditAmount" type="number" class="form-control">
                     </div>
+                    <div class="input-group input-group-outline mb-3">
+                        <label class="form-label">Total</label>
+                        <input id="TotalAmount" name="TotalAmount" type="number" readonly class="form-control">
+                    </div>
                     <div class="form-check form-check-info text-start ps-0">
-                        <input id="IsDayClosing" name="IsDayClosing" class="form-check-input" type="checkbox" value="" checked>
+                        <input id="IsDayClosing" name="IsDayClosing" class="form-check-input" type="checkbox" value="0" checked>
                         <label class="form-check-label" for="flexCheckDefault">
                             Day Closing
                         </label>
@@ -63,10 +156,10 @@
         </div>
     </div>
 
-    <div class="col-12 col-xl-4">
+    <div class="col-12 col-xl-8">
         <div class="card card-plain h-100">
             <div class="card-header pb-0 p-3">
-                <h6 class="mb-0">Todays Sales</h6>
+                <h6 id="lblSales" class="mb-0"><span class="text-primary"> @Server.DateNow().ToString("dddd, dd MMMM yyyy")</span> - Sales</h6>
             </div>
             <div class="card-body p-3">
                 <table id="tblSales" class="table table-hover table-striped" width="100%">
@@ -81,16 +174,13 @@
                         </tr>
                     </thead>
                     <tbody class="table-border-bottom-0">
-                        @foreach (var data in (IEnumerable<SecurityRoleView>)ViewData["Sales"])
+                        @foreach (var data in (IEnumerable<SaleView>)ViewData["Sales"])
                         {
                             <tr>
-                                <td>
-                                    <a href="@Url.Content("~/Inventory/ViewSecurityRole?sen=" + data.enSecurityRoleID)" class="btn btn-icon btn-outline-primary">
-                                        <span class="tf-icons bx bx-show"></span>
-                                    </a>
-                                </td>
-                                <td>@data.SecurityRoleName</td>
-
+                                <td>@data.CashAmount</td>
+                                <td>@data.BankAmount</td>
+                                <td>@data.CreditAmount</td>
+                                <td>@data.TotalAmount</td>
                                 @if (data.ModifiedDate == null)
                                 {
                                     <td>@data.CreatedDate.ToString("dd/MM/yyyy hh:mm tt") <br /> @data.CreatedByName</td>
@@ -101,14 +191,7 @@
                                 }
 
                                 <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                            <i class="bx bx-dots-vertical-rounded"></i>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href="javascript:Remove('@data.enSecurityRoleID');"><i class="bx bx-trash me-1"></i> Delete</a>
-                                        </div>
-                                    </div>
+                                    <button class="btn btn-sm btn-danger" title="Remove" onclick="Remove('@data.enSalesID')"><i class="fa fa-trash"></i></button>
                                 </td>
                             </tr>
                         }

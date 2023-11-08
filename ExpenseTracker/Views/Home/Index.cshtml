@@ -59,7 +59,7 @@
 }
 
 <div class="row">
-    <div class="col-12 col-xl-6">
+    <div class="col-12 col-xl-8">
         <div class="card card-plain h-100">
             <div class="card-header pb-0 p-3">
                 <h6 class="mb-0"><span class="text-primary"> @Server.DateNow().ToString("dddd, dd MMMM yyyy")</span>  - Sales & Purchases </h6>
@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="text-end pt-1">
                                     <p class="text-sm mb-0 text-capitalize">Purchases</p>
-                                    <h4 class="mb-0">₹5,700</h4>
+                                    <h4 class="mb-0">₹ @ViewBag.TotalPurchaseAmount</h4>
                                 </div>
                             </div>
                             <hr class="dark horizontal my-0">
@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="text-end pt-1">
                                     <p class="text-sm mb-0 text-capitalize">Cash</p>
-                                    <h4 class="mb-0">₹12,300</h4>
+                                    <h4 class="mb-0">₹ @ViewBag.TotalCashAmount</h4>
                                 </div>
                             </div>
                             <hr class="dark horizontal my-0">
@@ -126,7 +126,7 @@
                                 </div>
                                 <div class="text-end pt-1">
                                     <p class="text-sm mb-0 text-capitalize">Card/UPI</p>
-                                    <h4 class="mb-0">₹9,300</h4>
+                                    <h4 class="mb-0">₹ @ViewBag.TotalBankAmount</h4>
                                 </div>
                             </div>
                             <hr class="dark horizontal my-0">
@@ -152,7 +152,7 @@
                                 </div>
                                 <div class="text-end pt-1">
                                     <p class="text-sm mb-0 text-capitalize">Credit</p>
-                                    <h4 class="mb-0">₹300</h4>
+                                    <h4 class="mb-0">₹ @ViewBag.TotalCreditAmount</h4>
                                 </div>
                             </div>
                             <hr class="dark horizontal my-0">
@@ -174,7 +174,7 @@
         </div>
     </div>
   
-    <div class="col-12 col-xl-6">
+    <div class="col-12 col-xl-4">
         <div class="card card-plain h-100">
             <div class="card-header pb-0 p-3">
                 <h6 class="mb-0">Tasks</h6>

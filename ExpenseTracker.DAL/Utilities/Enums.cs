@@ -57,41 +57,7 @@ namespace ExpenseTracker.DAL.Utilities
 
         }
 
-        public enum OrderStatus
-        {
-			New = 0,
-			Ordered = 1,
-            Processing = 2,
-            Completed = 3,
-            Returned=4
 
-        }
-        public enum ConsignmentStatus
-        {
-            Prepared = 0,
-            Delivered = 1,
-            InUse = 2,
-            Completed=3,
-            Returned = 4,
-        }
-        
-        public enum StoreAuditType
-        {
-            Purchase = 1,
-            PurchaseReturns = 2,
-
-            StockAdjustments=3,
-
-			Consignments = 4,
-			ConsignmentReturns = 5,
-
-			Sales =6,
-            SalesReturns=7,
-
-            DeliveryNote=8
-			
-
-		}
 		public enum DocumentFolder
 		{
 			PurchaseBills = 1,
@@ -104,37 +70,10 @@ namespace ExpenseTracker.DAL.Utilities
             ConsignmentReturns=8,
 
 		}
-        public enum AccountType
+        public enum EventType
         {
-            Assets = 1,
-            Capital = 2,
-            Expenses =3,
-            Income = 4,
-            Liabilities = 5,
-        }
-        public enum TransactionType
-        { 
-            Debit=1,
-            Credit=2
-        
-        }
-        public enum InvoiceType
-        {
-            PurchaseOrder = 1,
-            PurchaseVoucher = 2,
-            PurchaseReturn =3,
-            ConsignmentNote=4,
-            DeliveryNote=5,
-            Quotation=6,
-            SalesInvoice=7,
-			ConsignmentReturn = 8,
-            ExpenseVoucher=9,
-            DebitNote = 10,
-            CreditNote = 11,
-            PurchaseSettlement = 12,
-            SalesReceipt = 13,
-            StatementofAccount = 14,
-
+            Appointment=1,
+            Task=2
         }
         public enum PaymentMode
         {

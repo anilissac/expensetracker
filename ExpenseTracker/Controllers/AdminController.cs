@@ -24,6 +24,7 @@ namespace ExpenseTracker.Controllers
             R_Account = new AccountRepository(_httpContextAccessor);
             R_Settings = new SettingsRepository(httpContextAccessor);
         }
+        [TypeFilter(typeof(SessionTimeout))]
         public IActionResult Index()
         {
             ViewData["OrgUnits"] = R_Settings.GetOrgUnits();
