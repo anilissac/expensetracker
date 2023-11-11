@@ -1,7 +1,7 @@
 ﻿@using ExpenseTracker.DAL.Utilities
 @using ExpenseTracker.DAL.Models;
 @{
-    ViewData["Title"] = "Companies";
+    ViewData["Title"] = "Restaurants";
 }
 @section Styles
     {
@@ -103,12 +103,11 @@
                 <thead>
                     <tr>
                         <th></th>
-                        <th>Vendor Name</th>
-                        <th>TRN</th>
+                        <th>Restaurant Name</th>
+                        <th>License</th>
                         <th>Contact Details</th>
                         <th>Location</th>
                         <th>Modified On</th>
-                        <th></th>
                     </tr>
                 </thead>
                 <tbody class="table-border-bottom-0">
@@ -117,7 +116,7 @@
                         <tr>
                             <td>
                                 <a href="@Url.Content("~/Settings/ViewOrgUnit?sen=" + data.enOrgUnitID)" class="btn btn-icon btn-outline-primary">
-                                    <span class="tf-icons bx bx-show"></span>
+                                    <i class="fa fa-eye"></i>
                                 </a>
                             </td>
                             <td>@data.OrgUnitName</td>
@@ -134,17 +133,6 @@
                                 <td>@data.ModifiedDate.Value.ToString("dd/MM/yyyy hh:mm tt") <br /> @data.ModifiedByName</td>
                             }
 
-                            <td>
-                                <div class="dropdown">
-                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-                                        <i class="bx bx-dots-vertical-rounded"></i>
-                                    </button>
-                                    <div class="dropdown-menu">
-                                        <a class="dropdown-item" href="javascript:UnderDevelopment();"><i class="bx bx-cog me-1"></i> Settings</a>
-                                        <a class="dropdown-item" href="javascript:Remove('@data.enOrgUnitID');"><i class="bx bx-trash me-1"></i> Delete</a>
-                                    </div>
-                                </div>
-                            </td>
                         </tr>
                     }
                 </tbody>

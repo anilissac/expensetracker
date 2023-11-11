@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Linq;
 
 namespace ExpenseTracker.Controllers
 {
@@ -97,6 +98,11 @@ namespace ExpenseTracker.Controllers
             ViewData["OrgUnits"] = R_Settings.GetOrgUnits();
 
             return View();
+        }
+        public JsonResult GetAppUsers()
+        {
+            var resultData = R_Account.GetAppUsers().Select(c => new { Value = c.UserID, Text = c.FirstName + " " + c.LastName }).OrderBy(x => x.Text).ToList();
+            return Json(resultData);
         }
         [TypeFilter(typeof(SessionTimeout))]
         public IActionResult ViewAppUser(string sen)

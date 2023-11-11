@@ -17,7 +17,9 @@
     <script>
         $(document).ready(function () {
 
-
+            $("form").each(function () {
+                $(this).find(':input').focus();
+            });
 
             $.getJSON('/Settings/GetOrgUnits', function (result) {
                 FillDropdown("#DefaultOrgUnitID", result);
@@ -94,7 +96,7 @@
         </div>
             <div class="card-body p-3">
             <div class="d-flex align-items-start align-items-sm-center gap-4">
-                <img src="@(data.ProfilePictureURL==null?"../assets/img/avatars/1.png":data.ProfilePictureURL)"
+                <img src="@(data.ProfilePictureURL==null?"../assets/img/unknown_person.jpg":data.ProfilePictureURL)"
                      alt="user-avatar"
                      class="d-block rounded"
                      height="100"
@@ -127,38 +129,51 @@
             <div class="card-body">
                 <div class="row">
                     <div class="mb-3 col-md-4">
+                            <div class="input-group input-group-outline my-3">
                         <label for="FirstName" class="form-label">First Name</label>
                         <input class="form-control" type="text" id="FirstName" name="FirstName" value="@data.FirstName" autofocus="">
                     </div>
+                        </div>
                     <div class="mb-3 col-md-4">
+                                <div class="input-group input-group-outline my-3">
                         <label for="LastName" class="form-label">Last Name</label>
                         <input class="form-control" type="text" id="LastName" name="LastName" value="@data.LastName">
                     </div>
+                            </div>
                     <div class="mb-3 col-md-4">
+                                    <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="Username">Username</label>
                         <input type="text" id="Username" name="Username" class="form-control" value="@data.Username" placeholder="john.doe@example.com">
                     </div>
+                                </div>
                     <div class="mb-3 col-md-6">
+                                        <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="ContactNumber">Phone Number</label>
                         <input type="text" id="ContactNumber" name="ContactNumber" class="form-control" value="@data.ContactNumber">
                     </div>
+                                    </div>
                     <div class="mb-3 col-md-6">
+                                            <div class="input-group input-group-outline my-3">
                         <label for="ContactEmail" class="form-label">E-mail</label>
                         <input class="form-control" type="text" id="ContactEmail" name="ContactEmail" value="@data.ContactEmail" placeholder="john.doe@example.com">
                     </div>
-
+                                        </div>
 
                     <div class="mb-3 col-md-6">
+                                                <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="DefaultOrgUnitID">Default Company</label>
                         <select id="DefaultOrgUnitID" name="DefaultOrgUnitID" class="select2 form-select">
                             <option value="">Select</option>
                         </select>
                     </div>
+                                            </div>
                     <div class="mb-3 col-md-6">
+                                                    <div class="input-group input-group-outline my-3">
                         <label for="DefaultSecurityRoleID" class="form-label">Default Security Role</label>
                         <select id="DefaultSecurityRoleID" name="DefaultSecurityRoleID" class="select2 form-select">
                             <option value="">Select Role</option>
                         </select>
+                                                    </div>
                     </div>
                 </div>
                 <div class="mt-2">

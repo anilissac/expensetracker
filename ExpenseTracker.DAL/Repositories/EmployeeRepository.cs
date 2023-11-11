@@ -250,10 +250,11 @@ namespace ExpenseTracker.DAL.Repositories
                              EventEndDateTime = x.EventEndDateTime,
                              EventTitle = x.EventTitle,
                          
-                             AssignedStaffs =x.AssignedStaffs,
+                             AssignedTo =x.AssignedTo,
+                             EventStatus=x.EventStatus,
                              EventDescription = x.EventDescription,
                              EventTypeID = x.EventTypeID,
-                             NotificationColor = x.EventTypeID == 1 ?  "#ffa500" : "#669900",
+                             NotificationColor = x.EventTypeID == (int)Enums.EventType.Appointment ?  "#ffa500" : "#669900",
                              OrgUnitID =x.OrgUnitID,
                              RecordStatus=x.RecordStatus,
                          }).Where(s => s.RecordStatus==0 &&  s.EventStartDateTime >= StartDate && s.EventEndDateTime <= EndDate).ToList();
@@ -279,7 +280,29 @@ namespace ExpenseTracker.DAL.Repositories
 
             return result;
         }
-     
+        public List<CalendarEventView> GetTaskAssignments(int OrgUnitID, int AssignedTo)
+        {
+            var _data = (from x in db.CalendarEvents
+
+                         select new CalendarEventView
+                         {
+                             CalendarEventID = x.CalendarEventID,
+                             EventStartDateTime = x.EventStartDateTime,
+                             EventEndDateTime = x.EventEndDateTime,
+                             EventTitle = x.EventTitle,
+
+                             AssignedTo = x.AssignedTo,
+                             EventStatus = x.EventStatus,
+                             EventDescription = x.EventDescription,
+                             EventTypeID = x.EventTypeID,
+                             NotificationColor = x.EventTypeID == (int)Enums.EventType.Appointment ? "#ffa500" : "#669900",
+                             OrgUnitID = x.OrgUnitID,
+                             RecordStatus = x.RecordStatus,
+                         }).Where(s => s.RecordStatus == 0 && (s.OrgUnitID == OrgUnitID || s.AssignedTo == AssignedTo)).ToList();
+
+
+            return _data;
+        }
         public CalendarEventView GetCalendarEvent(long CalendarEventID)
         {
             var _data = (from x in db.CalendarEvents
@@ -289,10 +312,11 @@ namespace ExpenseTracker.DAL.Repositories
                              EventStartDateTime = x.EventStartDateTime,
                              EventEndDateTime = x.EventEndDateTime,
                              EventTitle = x.EventTitle,
-                             AssignedStaffs = x.AssignedStaffs,
+                             AssignedTo = x.AssignedTo,
+                             EventStatus = x.EventStatus,
                              EventDescription = x.EventDescription,
                              EventTypeID = x.EventTypeID,
-                             NotificationColor = x.EventTypeID == 1 ? "#ffa500" : "#669900",
+                             NotificationColor = x.EventTypeID == (int)Enums.EventType.Appointment ? "#ffa500" : "#669900",
                              OrgUnitID = x.OrgUnitID,
                          }).Where(s => s.CalendarEventID == CalendarEventID).FirstOrDefault();
 
@@ -305,25 +329,21 @@ namespace ExpenseTracker.DAL.Repositories
             {
                 lCalendarEvent = new Models.CalendarEvent();
                 lCalendarEvent.CalendarEventID = oCalendarEvent.CalendarEventID;
-
+                lCalendarEvent.OrgUnitID = oCalendarEvent.OrgUnitID;
+                lCalendarEvent.AssignedTo = oCalendarEvent.AssignedTo;
                 lCalendarEvent.EventStartDateTime = oCalendarEvent.EventStartDateTime;
                 lCalendarEvent.EventEndDateTime = oCalendarEvent.EventEndDateTime;
                 lCalendarEvent.EventTitle = oCalendarEvent.EventTitle;
                 lCalendarEvent.EventDescription = oCalendarEvent.EventDescription;
                 lCalendarEvent.EventTypeID = oCalendarEvent.EventTypeID;
-
-
-             if(oCalendarEvent.SelectedAssignedStaffs !=null) lCalendarEvent.AssignedStaffs = String.Join(",", oCalendarEvent.SelectedAssignedStaffs) ;
-
-                if(lCalendarEvent.EventTypeID == 2) lCalendarEvent.EventTitle ="Tasks - " + lCalendarEvent.AssignedStaffs;
-                else lCalendarEvent.EventTitle = "Leave - " + lCalendarEvent.AssignedStaffs;
+                lCalendarEvent.EventStatus = (int)Enums.EventStatus.Active;
 
                 lCalendarEvent.CreatedBy = oCalendarEvent.CreatedBy;
                 lCalendarEvent.CreatedDate = Server.DateNow();
                 lCalendarEvent.ModifiedBy = oCalendarEvent.CreatedBy;
                 lCalendarEvent.ModifiedDate = Server.DateNow();
                 lCalendarEvent.RecordStatus = 0;
-                lCalendarEvent.OrgUnitID = (int)_httpContextAccessor.HttpContext.Session.GetInt32("CurrentOrgUnitID");
+               
 
                 db.CalendarEvents.Add(lCalendarEvent);
                 db.SaveChanges();
@@ -335,14 +355,6 @@ namespace ExpenseTracker.DAL.Repositories
                 lCalendarEvent.EventEndDateTime = oCalendarEvent.EventEndDateTime;
                 lCalendarEvent.EventTitle = oCalendarEvent.EventTitle;
                 lCalendarEvent.EventDescription = oCalendarEvent.EventDescription;
-                //lCalendarEvent.EventTypeID = oCalendarEvent.EventTypeID;
-
-
-                if (oCalendarEvent.SelectedAssignedStaffs != null) lCalendarEvent.AssignedStaffs = String.Join(",", oCalendarEvent.SelectedAssignedStaffs);
-                if (lCalendarEvent.EventTypeID == 2) lCalendarEvent.EventTitle = "Tasks - " + lCalendarEvent.AssignedStaffs;
-                else lCalendarEvent.EventTitle = "Leave - " + lCalendarEvent.AssignedStaffs;
-
-                lCalendarEvent.EventTypeID = oCalendarEvent.EventTypeID;
                 lCalendarEvent.ModifiedBy = oCalendarEvent.ModifiedBy;
                 lCalendarEvent.ModifiedDate = Server.DateNow();
                 db.SaveChanges();
@@ -376,7 +388,7 @@ namespace ExpenseTracker.DAL.Repositories
                     lCalendarEvent.ModifiedBy = ModifiedBy;
                     lCalendarEvent.ModifiedDate = Server.DateNow();
                     db.SaveChanges();
-                    R_Account.SaveAuditTrail("Schedule " + lCalendarEvent.EventTitle + " has been removed.");
+                    R_Account.SaveAuditTrail("Task " + lCalendarEvent.EventTitle + " has been removed.");
                 }
 
             }

@@ -18,7 +18,7 @@ namespace ExpenseTracker
         /// <param name="actions"></param>
         /// <param name="cssClass"></param>
         /// <returns></returns>
-        public static string ActiveClass(this IHtmlHelper htmlHelper, string controllers = null, string actions = null, string cssClass = "active")
+        public static string ActiveClass(this IHtmlHelper htmlHelper, string controllers = null, string actions = null, string cssClass = "active bg-gradient-primary")
         {
             var currentController = htmlHelper?.ViewContext.RouteData.Values["controller"] as string;
             var currentAction = htmlHelper?.ViewContext.RouteData.Values["action"] as string;

@@ -1,7 +1,7 @@
 ﻿@using ExpenseTracker.DAL.Utilities
 @using ExpenseTracker.DAL.Models;
 @{
-    ViewData["Title"] = "Company Details";
+    ViewData["Title"] = "Restaurant Details";
     var data = (OrgUnitView)ViewData["OrgUnit"];
 }
 @section Styles
@@ -17,7 +17,9 @@
     <script>
         $(document).ready(function () {
 
-
+            $("form").each(function () {
+                $(this).find(':input').focus();
+            });
 
             $.getJSON('/Settings/GetCountries', function (result) {
 
@@ -58,68 +60,89 @@
                 <div class="card-body p-3">
                 <div class="row">
                     <div class="mb-3 col-md-8">
+                            <div class="input-group input-group-outline my-3">
                         <label for="OrgUnitName" class="form-label">Company Name</label>
-                        <input class="form-control" type="text" id="OrgUnitName" name="OrgUnitName" value="@data.OrgUnitName" autofocus="">
+                        <input class="form-control" type="text" id="OrgUnitName" name="OrgUnitName" value="@data.OrgUnitName" autofocus>
                     </div>
-
+                        </div>
                     <div class="mb-3 col-md-4">
-                        <label class="form-label" for="TRN">TRN</label>
+                                <div class="input-group input-group-outline my-3">
+                        <label class="form-label" for="TRN">License No</label>
                         <input type="text" id="TRN" name="TRN" class="form-control" value="@data.TRN">
                     </div>
+                            </div>
                     <div class="mb-3 col-md-4">
+                                    <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="ContactPerson">Contact Person</label>
                         <input type="text" id="ContactPerson" name="ContactPerson" class="form-control" value="@data.ContactPerson">
                     </div>
+                                </div>
                     <div class="mb-3 col-md-4">
+                                    <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="ContactNumber">Phone Number</label>
                         <input type="text" id="ContactNumber" name="ContactNumber" class="form-control" value="@data.ContactNumber">
                     </div>
+                                </div>
                     <div class="mb-3 col-md-4">
+                                        <div class="input-group input-group-outline my-3">
                         <label for="ContactEmail" class="form-label">E-mail</label>
-                        <input class="form-control" type="text" id="ContactEmail" name="ContactEmail" value="@data.ContactEmail" placeholder="john.doe@example.com">
+                        <input class="form-control" type="text" id="ContactEmail" name="ContactEmail" value="@data.ContactEmail" placeholder="suraj.baby@example.com">
                     </div>
-
+                                    </div>
                     <div class="mb-3 col-md-12">
+                                            <div class="input-group input-group-outline my-3">
                         <label for="ContactAddress" class="form-label">Contact Address</label>
                         <input type="text" class="form-control" id="ContactAddress" name="ContactAddress" value="@data.ContactAddress">
                     </div>
-
+                                        </div>
                     <div class="mb-3 col-md-4">
+                                                <div class="input-group input-group-outline my-3">
                         <label for="BillingAddressLine1" class="form-label">Billing Address Line 1</label>
                         <input type="text" class="form-control" id="BillingAddressLine1" name="BillingAddressLine1" value="@data.BillingAddressLine1">
                     </div>
+                    </div>
                     <div class="mb-3 col-md-4">
+                         <div class="input-group input-group-outline my-3">
                         <label for="BillingAddressLine2" class="form-label">Billing Address Line 2</label>
                         <input type="text" class="form-control" id="BillingAddressLine2" name="BillingAddressLine2" value="@data.BillingAddressLine2">
                     </div>
+                    </div>
                     <div class="mb-3 col-md-4">
+                         <div class="input-group input-group-outline my-3">
                         <label for="BillingAddressLine3" class="form-label">Billing Address Line 3</label>
                         <input type="text" class="form-control" id="BillingAddressLine3" name="BillingAddressLine3" value="@data.BillingAddressLine3">
                     </div>
-
+                    </div>
                     <div class="mb-3 col-md-4">
+                         <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="CountryID">Country</label>
                         <select id="CountryID" name="CountryID" class="select2 form-select">
                             <option value="">Select</option>
                         </select>
                     </div>
+                    </div>
                     <div class="mb-3 col-md-4">
+                         <div class="input-group input-group-outline my-3">
                         <label class="form-label" for="StateID">State</label>
                         <select id="StateID" name="StateID" class="select2 form-select">
                             <option value="">Select</option>
                         </select>
                     </div>
+                    </div>
                     <div class="mb-3 col-md-4">
+                         <div class="input-group input-group-outline my-3">
                         <label for="ContactPostalCode" class="form-label">Postal Code</label>
                         <input type="text" class="form-control" id="ContactPostalCode" name="ContactPostalCode" value="@data.ContactPostalCode" placeholder="" maxlength="6">
                     </div>
-
-                    <div class="mb-3 col-md-6">
+                    </div>
+                   @* <div class="mb-3 col-md-6">
+                         <div class="input-group input-group-outline my-3">
                         <label for="DefaultCurrencyID" class="form-label">Default Currency</label>
                         <select id="DefaultCurrencyID" name="DefaultCurrencyID" class="select2 form-select">
                             <option value="">Select Currency</option>
                         </select>
                     </div>
+                    </div>*@
                 </div>
                 <div class="mt-2">
                     <button type="submit" class="btn btn-primary me-2"><i class="tf-icons bx bx-save"></i>&nbsp;Save</button>

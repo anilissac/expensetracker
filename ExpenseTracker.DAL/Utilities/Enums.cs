@@ -75,6 +75,15 @@ namespace ExpenseTracker.DAL.Utilities
             Appointment=1,
             Task=2
         }
+        public enum EventStatus
+        {
+            Active = 0,
+            Started = 1,
+            InProgress = 2,
+            OnHold=3,
+            Completed=4
+                
+        }
         public enum PaymentMode
         {
             Cash = 1,

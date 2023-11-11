@@ -1,4 +1,6 @@
-﻿using ExpenseTracker.DAL.Repositories;
+﻿using ExpenseTracker.DAL.Models;
+using ExpenseTracker.DAL.Repositories;
+using ExpenseTracker.DAL.Utilities;
 using ExpenseTracker.Filters;
 using ExpenseTracker.Models;
 using Microsoft.AspNetCore.Http;
@@ -18,6 +20,7 @@ namespace ExpenseTracker.Controllers
         private SaleRepository R_Sale;
         private AccountRepository R_Account;
         private SettingsRepository R_Settings;
+        private EmployeeRepository R_Employee;
         private readonly ILogger<HomeController> _logger;
         private IHttpContextAccessor _httpContextAccessor;
         public HomeController(ILogger<HomeController> logger, IHttpContextAccessor httpContextAccessor)
@@ -28,6 +31,7 @@ namespace ExpenseTracker.Controllers
             R_Sale = new SaleRepository(_httpContextAccessor);
             R_Account = new AccountRepository(_httpContextAccessor);
             R_Settings = new SettingsRepository(httpContextAccessor);
+            R_Employee = new EmployeeRepository(httpContextAccessor);
         }
         [TypeFilter(typeof(SessionTimeout))]
         public IActionResult Index()
@@ -38,6 +42,8 @@ namespace ExpenseTracker.Controllers
             ViewBag.TotalCashAmount = oTodaysSales.Sum(c=>c.CashAmount);
             ViewBag.TotalBankAmount = oTodaysSales.Sum(c => c.BankAmount);
             ViewBag.TotalCreditAmount = oTodaysSales.Sum(c => c.CreditAmount);
+
+            ViewData["CalendarEvents"] = R_Employee.GetTaskAssignments((int)HttpContext.Session.GetInt32("CurrentOrgUnitID"), (int)HttpContext.Session.GetInt32("CurrentUserID"));
             return View();
         }
 

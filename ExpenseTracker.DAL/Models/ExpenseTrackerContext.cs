@@ -171,9 +171,6 @@ public partial class ExpenseTrackerContext : DbContext
         {
             entity.ToTable("CalendarEvent");
 
-            entity.Property(e => e.AssignedStaffs)
-                .HasMaxLength(5000)
-                .IsUnicode(false);
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("(getdate())")
                 .HasColumnType("datetime");

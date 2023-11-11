@@ -17,9 +17,11 @@ public partial class CalendarEvent
 
     public string EventDescription { get; set; }
 
-    public string AssignedStaffs { get; set; }
+    public int? AssignedTo { get; set; }
 
     public int? OrgUnitID { get; set; }
+
+    public byte? EventStatus { get; set; }
 
     public int? RecordStatus { get; set; }
 
